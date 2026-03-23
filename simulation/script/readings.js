@@ -62,7 +62,9 @@ function voltageToAngle(voltageValue) {
   }
   const minGraphPoints = 6;
   const lampSelect = document.getElementById("number");
-  const bulbs = Array.from(document.querySelectorAll(".lamp-bulb"));
+  const rheostatKnob = document.querySelector(".rheostat-nob");
+  const rheostatBodyImage = document.getElementById("rheostat-img");
+  const transformerKnob = document.querySelector(".transformer-nob img");
 
   const observationBody = document.getElementById("observationBody");
   const graphBars = document.getElementById("graphBars");
@@ -90,7 +92,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
   const needle1 = document.querySelector(".meter-needle1"); // Ammeter-1 (motor current)
-  const needle2 = document.querySelector(".meter-needle2"); // Ammeter-2 (load current)
+  const needle2 = document.querySelector(".meter-needle2"); // Wattmeter needle (legacy power meter behavior)
   const needle3 = document.querySelector(".meter-needle3"); // Voltmeter-1 (supply voltage)
   const needle4 = document.querySelector(".meter-needle4"); // Voltmeter-2 (terminal voltage)
   const needleMotionState = new WeakMap();
@@ -106,21 +108,33 @@ document.addEventListener("keydown", (e) => {
     typeof window.matchMedia === "function" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Reading sets pulled from the legacy implementation
-  const ammeter1Readings = [3, 3.6, 5.4, 6.8, 8, 10, 11.5, 13, 14.2, 15.2];
-  const voltmeter1Readings = [225, 225, 225, 225, 225, 225, 225, 225, 225, 225];
-  const ammeter2Readings = [1.2, 2.8, 3.2, 3.6, 5.5, 7, 8.1, 10.2, 11, 12.7];
-  const voltmeter2Readings = [220, 212, 208, 205, 200, 195, 189, 184, 179, 176];
-  // Optional manual needle angles (degrees) per bulb index; edit as needed.
-  const ammeter1ManualAngles = [-58.5, -55.4, -46.1, -41, -34.8, -26.2, -18.6, -11, -2.5, 2];
-  const ammeter2ManualAngles = [-63.1, -58.9, -57, -54.9, -46.8, -38.7, -33.8, -24.0, -20, -13];
-  // Override voltmeter-1 dial to land on ~225 V once starter is on.
-  const voltmeter1ManualAngles = [5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5, 5.5];
-  const voltmeter2ManualAngles = [3, 1, -1, -3, -5, -7.8, -10, -13, -17, -20];
-  const GRAPH_TITLE_TEXT = "Terminal Voltage (V) vs Load Current (A)";
-  const GRAPH_X_AXIS_LABEL = "Load Current (A)";
-  const GRAPH_Y_AXIS_LABEL = "Terminal Voltage (V)";
-  const GRAPH_X_TICK_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  // Legacy readings from the original demo1.js (rheostat range: 0..9).
+  const rheostatStepValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const ammeterCurrentReadings = [0, 2.6, 2.9, 4.8, 5.5, 6.1, 6.4, 6.9, 7.5, 8.0];
+  const supplyVoltageReadings = [400, 400, 400, 400, 400, 400, 400, 400, 400, 400];
+  const wattmeterPowerReadings = [0, 40, 140, 680, 820, 940, 1040, 1100, 1160, 1200];
+  const speedReadings = [0, 1474, 1454, 1388, 1364, 1352, 1334, 1300, 1278, 1250];
+  const totalReadingSteps = rheostatStepValues.length;
+  const FIRST_MEASUREMENT_INDEX = 1;
+  const maxRecordedReadings = 9;
+  const RHEOSTAT_INITIAL_INDEX = 0;
+  const RHEOSTAT_ROD_LEFT_RATIO = 0.073;
+  const RHEOSTAT_ROD_RIGHT_RATIO = 0.9;
+  const RHEOSTAT_RIGHT_INSET_PX = 14;
+  const RHEOSTAT_FALLBACK_START_LEFT_PX = 21;
+  const RHEOSTAT_FALLBACK_END_LEFT_PX = 220;
+  const RHEOSTAT_TOP_PX = 2;
+  const LEGACY_AMMETER_BASE_ANGLE = -62;
+  const LEGACY_AMMETER_STEP_ANGLE = 1000 / 102;
+  const LEGACY_WATTMETER_BASE_ANGLE = -62;
+  const LEGACY_WATTMETER_STEP_ANGLE = 1150 / 100;
+  const LEGACY_VOLTMETER_SUPPLY_ANGLE = 30;
+  const TRANSFORMER_OFF_ANGLE = 270;
+  const TRANSFORMER_ON_ANGLE = 400;
+  const GRAPH_TITLE_TEXT = "Current (A) vs Speed (RPM)";
+  const GRAPH_X_AXIS_LABEL = "Speed (RPM)";
+  const GRAPH_Y_AXIS_LABEL = "Current (A)";
+  const GRAPH_X_TICK_VALUES = [1200, 1250, 1300, 1350, 1400, 1450, 1500];
 
   const readingsRecorded = [];
   let selectedIndex = -1;
@@ -164,15 +178,90 @@ document.addEventListener("keydown", (e) => {
     if (reportBtn) reportBtn.disabled = !enoughReadings || !graphPlotted;
   }
 
+  function getSafeRheostatIndex(idx) {
+    if (!Number.isFinite(idx) || totalReadingSteps <= 0) return RHEOSTAT_INITIAL_INDEX;
+    return clamp(Math.round(idx), 0, totalReadingSteps - 1);
+  }
+
+  function getRheostatTrackLeftRange() {
+    if (!rheostatKnob) {
+      return {
+        start: RHEOSTAT_FALLBACK_START_LEFT_PX,
+        end: RHEOSTAT_FALLBACK_END_LEFT_PX
+      };
+    }
+
+    const knobWidth = rheostatKnob.offsetWidth || 30;
+    const baseWidth =
+      (rheostatBodyImage && rheostatBodyImage.clientWidth) ||
+      (rheostatKnob.parentElement && rheostatKnob.parentElement.clientWidth) ||
+      0;
+
+    if (!baseWidth) {
+      return {
+        start: RHEOSTAT_FALLBACK_START_LEFT_PX,
+        end: RHEOSTAT_FALLBACK_END_LEFT_PX
+      };
+    }
+
+    const start = baseWidth * RHEOSTAT_ROD_LEFT_RATIO;
+    const end = baseWidth * RHEOSTAT_ROD_RIGHT_RATIO - knobWidth - RHEOSTAT_RIGHT_INSET_PX;
+
+    return {
+      start,
+      end: Math.max(start, end)
+    };
+  }
+
+  function updateRheostatRotation(idx) {
+    if (!rheostatKnob) return;
+    const safeIdx = getSafeRheostatIndex(idx);
+    const range = getRheostatTrackLeftRange();
+    const travel = Math.max(0, range.end - range.start);
+    const stepPx = totalReadingSteps > 1 ? travel / (totalReadingSteps - 1) : 0;
+    const left = range.start + safeIdx * stepPx;
+    rheostatKnob.style.left = `${left}px`;
+    rheostatKnob.style.top = `${RHEOSTAT_TOP_PX}px`;
+    rheostatKnob.style.transform = "none";
+  }
+
+  function resetLoadSelection() {
+    selectedIndex = -1;
+    readingArmed = false;
+    if (lampSelect) {
+      lampSelect.value = "";
+    }
+    updateRheostatRotation(RHEOSTAT_INITIAL_INDEX);
+    updateNeedles(-1);
+  }
+
+  function selectLoadIndex(nextIndex, { arm = true, announce = true } = {}) {
+    if (totalReadingSteps <= 0) return;
+    const safeIdx = getSafeRheostatIndex(nextIndex);
+    selectedIndex = safeIdx;
+    updateRheostatRotation(safeIdx);
+    updateNeedles(safeIdx);
+
+    if (lampSelect) {
+      lampSelect.value = String(safeIdx + 1);
+    }
+
+    if (!arm) return;
+    readingArmed = true;
+
+    if (!announce) return;
+    if (readingsRecorded.length === 0) {
+      speak(buildVoicePayload("first_reading_selected"));
+    } else {
+      speak(buildVoicePayload("second_reading"));
+    }
+  }
+
   function enforceReady(action) {
     if (!connectionsVerified) {
       speakOrAlert(buildVoicePayload("please_check_connections_first"));
-      if (action === "lampSelect" && lampSelect) {
-        lampSelect.value = "";
-        selectedIndex = -1;
-        readingArmed = false;
-        updateBulbs(0);
-        updateNeedles(-1);
+      if (action === "loadSelect") {
+        resetLoadSelection();
       }
       return false;
     }
@@ -261,63 +350,41 @@ document.addEventListener("keydown", (e) => {
     startNeedleAnimation(el, state);
   }
 
-  // Show supply voltage as soon as the starter handle is moved to ON.
+  function updateTransformerState() {
+    if (!transformerKnob) return;
+    transformerKnob.style.transition = "transform 260ms linear";
+    transformerKnob.style.transform = `rotate(${mcbOn && starterMoved ? TRANSFORMER_ON_ANGLE : TRANSFORMER_OFF_ANGLE}deg)`;
+  }
+
+  // Legacy startup behavior: starter ON positions rheostat at the first active step.
   window.addEventListener(STARTER_MOVED_EVENT, () => {
-    if (!needle3) return;
-    // Use the same calibrated/manual angle used during readings.
-    const starterAngle = resolveAngle(voltmeter1ManualAngles, 0, voltageToAngle(225));
-    setNeedleRotation(needle3, starterAngle);
+    selectLoadIndex(FIRST_MEASUREMENT_INDEX, { arm: true, announce: false });
+    updateTransformerState();
   });
 
   // Park voltmeter-1 when the MCB is turned off.
   window.addEventListener(MCB_TURNED_OFF_EVENT, () => {
-    if (!needle3) return;
-    setNeedleRotation(needle3, voltageToAngle(0));
+    resetLoadSelection();
   });
 
-  function resolveAngle(manualAngles, idx, fallbackAngle) {
-    const manual = manualAngles && Number.isFinite(manualAngles[idx]) ? manualAngles[idx] : null;
-    return Number.isFinite(manual) ? manual : fallbackAngle;
-  }
-
-  function updateBulbs(count) {
-    bulbs.forEach((bulb, idx) => {
-      const isOn = idx < count;
-      bulb.src = isOn ? "../images/on-bulb.png" : "../images/off-bulb.png";
-      bulb.classList.toggle("on", isOn);
-      bulb.classList.toggle("off", !isOn);
-    });
-  }
-
-  /* ✅ REPLACED: calibrated updateNeedles() (uses global currentToAngle/voltageToAngle) */
+  // Original demo1.js mappings adapted to this UI.
   function updateNeedles(idx) {
     const safeIdx = Number.isFinite(idx) ? idx : -1;
 
     if (safeIdx < 0) {
-      // park needles at 0
       setNeedleRotation(needle1, currentToAngle(0));
       setNeedleRotation(needle2, currentToAngle(0));
       setNeedleRotation(needle3, voltageToAngle(0));
       setNeedleRotation(needle4, voltageToAngle(0));
+      updateTransformerState();
       return;
     }
 
-    setNeedleRotation(
-      needle1,
-      resolveAngle(ammeter1ManualAngles, safeIdx, currentToAngle(ammeter1Readings[safeIdx]))
-    );
-    setNeedleRotation(
-      needle2,
-      resolveAngle(ammeter2ManualAngles, safeIdx, currentToAngle(ammeter2Readings[safeIdx]))
-    );
-    setNeedleRotation(
-      needle3,
-      resolveAngle(voltmeter1ManualAngles, safeIdx, voltageToAngle(voltmeter1Readings[safeIdx]))
-    );
-    setNeedleRotation(
-      needle4,
-      resolveAngle(voltmeter2ManualAngles, safeIdx, voltageToAngle(voltmeter2Readings[safeIdx]))
-    );
+    setNeedleRotation(needle1, LEGACY_AMMETER_BASE_ANGLE + safeIdx * LEGACY_AMMETER_STEP_ANGLE);
+    setNeedleRotation(needle2, LEGACY_WATTMETER_BASE_ANGLE + safeIdx * LEGACY_WATTMETER_STEP_ANGLE);
+    setNeedleRotation(needle3, LEGACY_VOLTMETER_SUPPLY_ANGLE);
+    setNeedleRotation(needle4, voltageToAngle(0));
+    updateTransformerState();
   }
 
   /* ===== everything below remains SAME as your current code ===== */
@@ -329,8 +396,8 @@ document.addEventListener("keydown", (e) => {
     }
     graphPlotted = false;
 
-    const currents = readingsRecorded.map(r => r.current);
-    const voltages = readingsRecorded.map(r => r.voltage);
+    const speeds = readingsRecorded.map((r) => r.speed);
+    const currents = readingsRecorded.map((r) => r.current);
 
     function ensurePlotly() {
       if (window.Plotly) return Promise.resolve();
@@ -348,8 +415,8 @@ document.addEventListener("keydown", (e) => {
         if (!graphPlot) return;
 
         const trace = {
-          x: currents,
-          y: voltages,
+          x: speeds,
+          y: currents,
           mode: "lines+markers",
           type: "scatter",
           name: GRAPH_TITLE_TEXT,
@@ -982,16 +1049,16 @@ tr:nth-child(even) { background-color: #f8fbff; }
 
     const row = document.createElement("tr");
     const serial = readingsRecorded.length; // already includes new entry
-    const a2 = ammeter2Readings[idx];
-    const v2 = voltmeter2Readings[idx];
+    const currentValue = ammeterCurrentReadings[idx];
+    const speedValue = speedReadings[idx];
 
-    row.innerHTML = `<td>${serial}</td><td>${a2}</td><td>${v2}</td>`;
+    row.innerHTML = `<td>${serial}</td><td>${currentValue}</td><td>${speedValue}</td>`;
     observationBody.appendChild(row);
   }
 
   function handleAddReading() {
     if (!enforceReady("addReading")) return;
-    if (selectedIndex < 0) {
+    if (selectedIndex < FIRST_MEASUREMENT_INDEX) {
       speakOrAlert(buildVoicePayload("before_add_table_select_bulbs"));
       return;
     }
@@ -999,13 +1066,13 @@ tr:nth-child(even) { background-color: #f8fbff; }
       speakOrAlert(buildVoicePayload("duplicate_reading"));
       return;
     }
-    if (readingsRecorded.length >= 10) {
+    if (readingsRecorded.length >= maxRecordedReadings) {
       speakOrAlert(buildVoicePayload("max_readings"));
       return;
     }
 
-    const load = selectedIndex + 1;
-    if (readingsRecorded.some((reading) => reading.load === load)) {
+    const rheostatStep = rheostatStepValues[selectedIndex];
+    if (readingsRecorded.some((reading) => reading.rheostatStep === rheostatStep)) {
       showPopup(
         getSpeechText(buildVoicePayload("duplicate_reading")),
         "Duplicate Reading"
@@ -1018,11 +1085,14 @@ tr:nth-child(even) { background-color: #f8fbff; }
     }
 
     readingsRecorded.push({
-      load,
-      current: ammeter2Readings[selectedIndex],
-      voltage: voltmeter2Readings[selectedIndex]
+      rheostatStep,
+      current: ammeterCurrentReadings[selectedIndex],
+      voltage: speedReadings[selectedIndex],
+      speed: speedReadings[selectedIndex],
+      power: wattmeterPowerReadings[selectedIndex],
+      supplyVoltage: supplyVoltageReadings[selectedIndex]
     });
-    window.labTracking?.recordStep?.(`Reading added (Load ${load})`);
+    window.labTracking?.recordStep?.(`Reading added (Rheostat ${rheostatStep})`);
 
     addRowToTable(selectedIndex);
     graphPlotted = false;
@@ -1031,13 +1101,13 @@ tr:nth-child(even) { background-color: #f8fbff; }
       showPopup("Reading added to the observation table.", "Observation");
       speak(buildVoicePayload("reading_added"));
     }
-    if (!allReadingsAlertShown && readingsRecorded.length === 10) {
+    if (!allReadingsAlertShown && readingsRecorded.length === maxRecordedReadings) {
       allReadingsAlertShown = true;
       showPopup(
-        "All 10 readings have been recorded. Now, plot the graph and then click on the report button to generate your report.",
+        `All ${maxRecordedReadings} readings have been recorded. Now, plot the graph and then click on the report button to generate your report.`,
         "All Readings Added"
       );
-      speak(buildVoicePayload("after_ten_readings_done"));
+      speak(buildVoicePayload("max_readings"));
     }
     readingArmed = false;
     stepGuide.complete("reading");
@@ -1046,7 +1116,7 @@ tr:nth-child(even) { background-color: #f8fbff; }
 
     if (readingsRecorded.length < minGraphPoints) {
       speakOrAlert(buildVoicePayload("after_first_reading_added"));
-    } else if (readingsRecorded.length >= minGraphPoints && readingsRecorded.length < 10) {
+    } else if (readingsRecorded.length >= minGraphPoints && readingsRecorded.length < maxRecordedReadings) {
       speakOrAlert(buildVoicePayload("graph_or_more_readings"));
     }
 
@@ -1060,35 +1130,94 @@ tr:nth-child(even) { background-color: #f8fbff; }
   }
 
   function handleSelectionChange() {
-    if (!enforceReady("lampSelect")) {
-      lampSelect.value = "";
-      selectedIndex = -1;
-      readingArmed = false;
-      updateBulbs(0);
-      updateNeedles(-1);
+    if (!enforceReady("loadSelect")) {
       return;
     }
 
     const count = parseInt(lampSelect.value, 10);
-    if (isNaN(count) || count < 1 || count > 10) {
-      selectedIndex = -1;
-      readingArmed = false;
-      updateBulbs(0);
-      updateNeedles(-1);
+    if (isNaN(count) || count < 1 || count > totalReadingSteps) {
+      resetLoadSelection();
       return;
     }
 
-    selectedIndex = count - 1;
-    readingArmed = true;
+    selectLoadIndex(count - 1);
+  }
 
-    updateBulbs(count);
-    updateNeedles(selectedIndex);
+  function bindRheostatKnob() {
+    if (!rheostatKnob) return;
 
-    if (readingsRecorded.length === 0) {
-      speak(buildVoicePayload("first_reading_selected"));
-    } else {
-      speak(buildVoicePayload("second_reading"));
+    let dragStartX = 0;
+    let dragStartIndex = RHEOSTAT_INITIAL_INDEX;
+    let dragging = false;
+
+    function onPointerMove(event) {
+      if (!dragging) return;
+      const range = getRheostatTrackLeftRange();
+      const travel = Math.max(1, range.end - range.start);
+      const pxPerStep = totalReadingSteps > 1 ? travel / (totalReadingSteps - 1) : travel;
+      const stepOffset = Math.round((event.clientX - dragStartX) / pxPerStep);
+      const origin = selectedIndex < 0 ? RHEOSTAT_INITIAL_INDEX : selectedIndex;
+      const nextIndex = getSafeRheostatIndex((dragStartIndex ?? origin) + stepOffset);
+      if (nextIndex === selectedIndex) return;
+      selectLoadIndex(nextIndex, { arm: true, announce: false });
     }
+
+    function stopDragging(event) {
+      if (!dragging) return;
+      dragging = false;
+      rheostatKnob.classList.remove("is-grabbing");
+      document.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerup", stopDragging);
+      document.removeEventListener("pointercancel", stopDragging);
+      if (event && typeof rheostatKnob.releasePointerCapture === "function") {
+        try {
+          rheostatKnob.releasePointerCapture(event.pointerId);
+        } catch (error) {}
+      }
+      if (selectedIndex >= FIRST_MEASUREMENT_INDEX && enforceReady("addReading")) {
+        if (readingsRecorded.length === 0) {
+          speak(buildVoicePayload("first_reading_selected"));
+        } else {
+          speak(buildVoicePayload("second_reading"));
+        }
+      }
+    }
+
+    rheostatKnob.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      if (!enforceReady("loadSelect")) return;
+      dragging = true;
+      dragStartX = event.clientX;
+      dragStartIndex = getSafeRheostatIndex(selectedIndex < 0 ? RHEOSTAT_INITIAL_INDEX : selectedIndex);
+      if (selectedIndex < 0) {
+        selectLoadIndex(dragStartIndex, { arm: true, announce: false });
+      }
+      rheostatKnob.classList.add("is-grabbing");
+      if (typeof rheostatKnob.setPointerCapture === "function") {
+        try {
+          rheostatKnob.setPointerCapture(event.pointerId);
+        } catch (error) {}
+      }
+      document.addEventListener("pointermove", onPointerMove);
+      document.addEventListener("pointerup", stopDragging);
+      document.addEventListener("pointercancel", stopDragging);
+      event.preventDefault();
+    });
+
+    rheostatKnob.addEventListener(
+      "wheel",
+      (event) => {
+        if (!enforceReady("loadSelect")) return;
+        event.preventDefault();
+        const direction = event.deltaY > 0 ? 1 : -1;
+        const baseIndex = selectedIndex < 0 ? RHEOSTAT_INITIAL_INDEX : selectedIndex;
+        const nextIndex = getSafeRheostatIndex(baseIndex + direction);
+        if (nextIndex !== selectedIndex) {
+          selectLoadIndex(nextIndex);
+        }
+      },
+      { passive: false }
+    );
   }
 
   function resetObservations() {
@@ -1115,6 +1244,11 @@ tr:nth-child(even) { background-color: #f8fbff; }
         window.stopGuideSpeech();
       }
     }
+
+    // Unlock wiring first so reset can clear all existing connections.
+    connectionsVerified = false;
+    starterMoved = false;
+    mcbOn = false;
 
     if (window.jsPlumb) {
       if (typeof jsPlumb.deleteEveryConnection === "function") jsPlumb.deleteEveryConnection();
@@ -1143,12 +1277,7 @@ tr:nth-child(even) { background-color: #f8fbff; }
       observationBody.innerHTML = "";
     }
 
-    selectedIndex = -1;
-    readingArmed = false;
-    if (lampSelect) lampSelect.value = "";
-
-    updateBulbs(0);
-    updateNeedles(-1);
+    resetLoadSelection();
 
     if (graphBars) graphBars.style.display = "block";
     if (graphPlot) {
@@ -1156,10 +1285,6 @@ tr:nth-child(even) { background-color: #f8fbff; }
       graphPlot.style.display = "none";
     }
     if (graphCanvas) graphCanvas.classList.remove("is-plotting");
-
-    connectionsVerified = false;
-    starterMoved = false;
-    mcbOn = false;
 
     sharedControls.setMcbState(false, { silent: true });
 
@@ -1181,6 +1306,12 @@ tr:nth-child(even) { background-color: #f8fbff; }
     lampSelect.addEventListener("change", handleSelectionChange);
     lampSelect.disabled = true;
   }
+
+  updateRheostatRotation(RHEOSTAT_INITIAL_INDEX);
+  bindRheostatKnob();
+  window.addEventListener("resize", () => {
+    updateRheostatRotation(selectedIndex < 0 ? RHEOSTAT_INITIAL_INDEX : selectedIndex);
+  });
 
   if (addTableBtn) {
     addTableBtn.addEventListener("click", handleAddReading);
@@ -1428,19 +1559,15 @@ tr:nth-child(even) { background-color: #f8fbff; }
   }
 
   window.addEventListener(MCB_TURNED_OFF_EVENT, function () {
-    selectedIndex = -1;
+    resetLoadSelection();
     if (lampSelect) {
-      lampSelect.value = "";
       lampSelect.disabled = true;
     }
     if (addTableBtn) addTableBtn.disabled = true;
-    updateBulbs(0);
-    updateNeedles(-1);
   });
 
   // initialize defaults
-  updateBulbs(0);
-  updateNeedles(-1);
+  resetLoadSelection();
   updateGraphControls();
   sharedControls.updateControlLocks();
 

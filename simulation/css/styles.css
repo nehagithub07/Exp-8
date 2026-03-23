@@ -367,9 +367,16 @@ h3 {
   width: clamp(24px, 8%, 34px);
   height: auto;
   left: 15%;
-  top:40%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+  top: 40%;
+  transform: none;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.rheostat-nob.is-grabbing {
+  cursor: grabbing;
 }
 
 .rheostat-label {
@@ -1009,11 +1016,11 @@ h3 {
 }
 
 .transformer-nob img {
-  position: absolute;
-  left: 50%;
-  top: 43.8%;
-  width: 150px;
-  height: 150px;
+    position: absolute;
+    left: 24%;
+    top: 11.8%;
+    width: 150px;
+    height: 150px;
 
 }
 /* Keep jsPlumb endpoints and wires above machine images */
@@ -2644,14 +2651,16 @@ body.is-modal-open {
     padding: 3px 3px !important;
   }
 
-  /* Print-only fine tune: lamp-load L1/L2 points slightly lower. */
-  body.simulation-print-active #simulation-print-container #pointL1,
-  body.simulation-print-active #simulation-print-container #pointL2 {
+  /* Print-only fine tune: rheostat endpoints slightly lower. */
+  body.simulation-print-active #simulation-print-container #point18,
+  body.simulation-print-active #simulation-print-container #point19,
+  body.simulation-print-active #simulation-print-container #point20 {
     top: 286px !important;
   }
 
-  body.simulation-print-active #simulation-print-container .point-L1,
-  body.simulation-print-active #simulation-print-container .point-L2 {
+  body.simulation-print-active #simulation-print-container .point-18,
+  body.simulation-print-active #simulation-print-container .point-19,
+  body.simulation-print-active #simulation-print-container .point-20 {
     top: 300px !important;
   }
 
