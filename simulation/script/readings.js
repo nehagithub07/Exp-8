@@ -1421,7 +1421,14 @@ tr:nth-child(even) { background-color: #f8fbff; }
     const cloneMeters = panelClone?.querySelector(".meters");
     if (!sourceMeters || !cloneMeters) return;
 
-    const meterLabelIds = ["ammter1-label", "voltmeter1-label", "ammter2-label", "voltmeter2-label"];
+    const meterLabelIds = [
+      "ammter1-label",
+      "voltmeter1-label",
+      "wattmeter1-label",
+      "rpm1-label",
+      "ammter2-label",
+      "voltmeter2-label"
+    ];
     const PRINT_LABEL_X_OFFSET = -14;
     const PRINT_LABEL_Y_OFFSET = -6;
     const sourceMetersRect = sourceMeters.getBoundingClientRect();

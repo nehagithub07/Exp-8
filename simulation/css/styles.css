@@ -145,7 +145,7 @@ h3 {
   border-radius: 6px;
   position: relative;
   width: 100%;
-  max-width: 350px;
+  max-width: 190px;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   margin: 0 auto clamp(10px, 2vw, 18px);
@@ -156,48 +156,17 @@ h3 {
 .mcb-block {
   position: absolute;
   top: 1%;
-  left: -5.125%;
-  width: 46.875%;
+  left: 15.125%;
+  width: 70%;
 }
 
 .mcb-toggle {
   width: 100%;
-  height: 160px;
+  height: 180px;
   display: block;
 }
 
-.starter-block {
-  position: absolute;
-  top: -11.42%;
-  right: -2.25%;
-}
 
-.starter-body {
-  display: block;
-  width: 111.11%;
-  height: 235px;
-}
-
-.starter-handle {
-  position: absolute;
-  width: 16.67%;
-  height: auto;
-  top: 37.04%;
-  left: 16.67%;
-  transform: none;
-  cursor: default;
-  z-index: 5;
-  pointer-events: auto;
-}
-
-.starter-handle:active {
-  cursor: default;
-}
-
-.starter-handle.moved {
-  left: 68%;
-  top: 35%;
-}
 
 .led-row {
   display: flex;
@@ -212,131 +181,7 @@ h3 {
   box-shadow: 0 0 10px rgba(255, 76, 76, 0.8);
 }
 
-/* =========================
-   LAMP BOARD
-========================= */
-.lamp-board {
-  position: relative;
-  top: 4px;
-  width: 100%;
-  max-width: 290px;
-  height: 380px;
-  left: -8px;
-
-  /* Removed fixed height: let aspect-ratio control for responsiveness */
-  aspect-ratio: 4 / 3;
-  padding: clamp(12px, 1.8vw, 18px);
-  background-image: url(../images/wooden-texture.jpg);
-  background-size: cover;
-  background-position: center;
-  border: 4px solid var(--wood-border);
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(8px, 1.2vw, 12px);
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.12), 0 6px 14px rgba(0, 0, 0, 0.18);
-  overflow: visible;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.lamp-grid {
-  width: 120%;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(12px, 2vw, 18px);
-  justify-items: center;
-  align-items: center;
-}
-
-.lamp-bulb {
-  /* Slightly reduced sizes for better fit */
-  width: clamp(170px, 10vw, 220px);
-  height: 80px;
-  justify-self: center;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
-  border-radius: 12px;
-}
-
-.lamp-grid .lamp-bulb:nth-child(9) {
-  grid-column: 2;
-}
-
-.lamp-grid .lamp-bulb:nth-child(10) {
-  grid-column: 3;
-}
-
-
-
-/* Dropdown styling to match the warm, tactile theme */
-.lampboard-dropdown {
-  width: 100%;
-  max-width: 300px;
-  margin: 0px 0px 1px -12px;
-  padding: 2px;
-  background: linear-gradient(180deg, #f6eedc, #e8dcc6);
-  border: 2px solid rgba(17, 17, 17, 0.25);
-  border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-.lampboard-dropdown select {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding: 10px 38px 10px 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #2f241a;
-  background: linear-gradient(135deg, #fdf7e7, #e4d5bd 55%, #ccb899);
-  border: 2px solid rgba(40, 32, 24, 0.35);
-  border-radius: 8px;
-  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.6),
-    inset 0 -3px 8px rgba(0, 0, 0, 0.08),
-    0 6px 14px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-  background-image:
-    linear-gradient(45deg, transparent 50%, #6a543e 50%),
-    linear-gradient(135deg, #6a543e 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 12px) calc(50% - 3px);
-  background-size: 8px 8px;
-  background-repeat: no-repeat;
-}
-
-.lampboard-dropdown select:hover {
-  transform: translateY(-1px);
-  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.7),
-    inset 0 -3px 8px rgba(0, 0, 0, 0.1),
-    0 10px 18px rgba(0, 0, 0, 0.18);
-  filter: saturate(1.03);
-}
-
-.lampboard-dropdown select:focus {
-  outline: 2px solid #b08452;
-
-}
-
-.lampboard-dropdown select option {
-  color: #2f241a;
-  font-weight: 600;
-  padding: 10px 14px;
-  background: linear-gradient(180deg, #fff7e5, #e3d2b8 60%, #ceb896);
-  border-bottom: 1px solid rgba(17, 17, 17, 0.15);
-}
-
-.lampboard-dropdown select option:checked {
-  background: linear-gradient(180deg, #f0dfbf, #d5c09a);
-}
-
-.lampboard-dropdown select option:hover {
-  background: linear-gradient(180deg, #ffeec7, #e6cda1);
-}
-
+ 
 .rheostat-panel {
   position: relative;
   width: 100%;
@@ -362,12 +207,12 @@ h3 {
   object-fit: contain;
 }
 
-.rheostat-nob {
+#rheostat-nob {
   position: absolute;
   width: clamp(24px, 8%, 34px);
   height: auto;
-  left: 15%;
-  top: 40%;
+  left: 10%;
+  top: 38%;
   transform: none;
   pointer-events: auto;
   cursor: grab;
@@ -741,7 +586,8 @@ h3 {
 
 /* ---- LABELS (always below meters, never cut) ---- */
 #ammter1-label,
-#ammter2-label
+#ammter2-label,
+#wattmeter1-label
  {
   margin-top: 40px;
   position: absolute;
@@ -763,7 +609,8 @@ h3 {
 
 }
 #voltmeter1-label,
-#voltmeter2-label {
+#voltmeter2-label,
+#rpm1-label {
   margin-top: 40px;
   position: absolute;
   top: -35px;
@@ -793,8 +640,14 @@ h3 {
 #ammter2-label {
   grid-column: 3;
 }
+#wattmeter1-label {
+  grid-column: 3;
+}
 
 #voltmeter2-label {
+  grid-column: 4;
+}
+#rpm1-label {
   grid-column: 4;
 }
  
@@ -831,12 +684,14 @@ h3 {
     grid-row: 3;
   }
 
-  #ammter2-label {
+  #ammter2-label,
+  #wattmeter1-label {
     grid-column: 1;
     grid-row: 4;
   }
 
-  #voltmeter2-label {
+  #voltmeter2-label,
+  #rpm1-label {
     grid-column: 2;
     grid-row: 4;
   }
@@ -974,12 +829,12 @@ h3 {
 
 .motor-box img,
 .transformer-box img {
-  width: 100%;
-  height: 100%;
+  width: 93%;
+  height: 93%;
   max-height: 90%;
   object-fit: contain;
   position: absolute;
-  top: 45%;
+  top: 49%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
@@ -1023,15 +878,21 @@ h3 {
     height: 150px;
 
 }
-/* Keep jsPlumb endpoints and wires above machine images */
+/* Keep jsPlumb endpoints/wires above all machine artwork */
+.top-row {
+  isolation: isolate;
+}
+
 .jtk-endpoint,
-._jsPlumb_endpoint {
-  z-index: 6000 !important;
+._jsPlumb_endpoint,
+.jtk-overlay,
+._jsPlumb_overlay {
+  z-index: 25000 !important;
 }
 
 .jtk-connector,
 ._jsPlumb_connector {
-  z-index: 5500 !important;
+  z-index: 26000 !important;
 }
 
 .generator-rotor {

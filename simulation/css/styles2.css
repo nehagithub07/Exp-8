@@ -43,9 +43,9 @@
 }
 
 /* Endpoint dot positions */
-#point1 { position: absolute; left: 45px; top: 167px; }
-#point2 { position: absolute; left: 80px; top: 167px; }
-#point3 { position: absolute; left: 115px; top: 167px; }
+#point1 { position: absolute; left:30px; top: 187px; }
+#point2 { position: absolute; left: 75px; top: 187px; }
+#point3 { position: absolute; left: 118px; top: 187px; }
 
 #point4 { position: absolute; left: 70px; top: 158px; }
 #point5 { position: absolute; left: 145px; top: 158px; }
@@ -59,28 +59,28 @@
 
 #point12 { position: absolute; left: 50px; top: 20px; z-index: 3500; }
 #point13 { position: absolute; left: 127px; top: 20px; z-index: 3500; }
-#point14 { position: absolute; left: 205px; top: 20px; z-index: 3500; }
+#point14 { position: absolute; left: 230px; top: 20px; z-index: 3500; }
 
 #point21 { position: absolute; left: 49px; top: 228px; z-index: 3500; }
 #point22 { position: absolute; left: 127px; top: 228px; z-index: 3500; }
-#point23 { position: absolute; left: 205px; top: 228px; z-index: 3500; }
+#point23 { position: absolute; left: 230px; top: 228px; z-index: 3500; }
 
 #point15 { position: absolute; left: 50px; top: 20px; z-index: 3500; }
-#point16 { position: absolute; left: 127px; top: 20px; z-index: 3500; }
-#point17 { position: absolute; left: 205px; top: 20px; z-index: 3500; }
+#point16 { position: absolute; left: 135px; top: 20px; z-index: 3500; }
+#point17 { position: absolute; left: 230px; top: 20px; z-index: 3500; }
 
 #point24 { position: absolute; left: 49px; top: 228px; z-index: 3500; }
-#point25 { position: absolute; left: 127px; top: 228px; z-index: 3500; }
-#point26 { position: absolute; left: 205px; top: 228px; z-index: 3500; }
+#point25 { position: absolute; left: 135px; top: 228px; z-index: 3500; }
+#point26 { position: absolute; left: 230px; top: 228px; z-index: 3500; }
 
 #point18 { position: absolute; left: 62px; top: 280px; }
 #point19 { position: absolute; left: 136px; top: 280px; }
 #point20 { position: absolute; left: 210px; top: 280px; }
 
 /* Button label positions */
-.point-1  { font-weight: bold; left: 30px;  top: 178px; }
-.point-2  { font-weight: bold; left: 62px;  top: 178px; }
-.point-3  { font-weight: bold; left: 92px;  top: 178.5px; }
+.point-1  { font-weight: bold; left: 13px;  top: 198px; }
+.point-2  { font-weight: bold; left: 60px;  top: 198px; }
+.point-3  { font-weight: bold; left: 102px;  top: 198px; }
 
 .point-4  { font-weight: bold; left: 57px;  top: 175px; }
 .point-5  { font-weight: bold; left: 133px; top: 175px; }
@@ -93,20 +93,20 @@
 .point-11 { font-weight: bold; left: 160px; top: 175px; }
 
 .point-12 { font-weight: bold; left: 5px;   top: 2px; }
-.point-13 { font-weight: bold; left: 110px; top: 2px; }
-.point-14 { font-weight: bold; left: 215px; top: 2px; }
+.point-13 { font-weight: bold; left: 135px; top: 2px; }
+.point-14 { font-weight: bold; left: 240px; top: 2px; }
 
 .point-21 { font-weight: bold; left: 5px;   top: 210px; }
-.point-22 { font-weight: bold; left: 110px; top: 210px; }
-.point-23 { font-weight: bold; left: 215px; top: 210px; }
+.point-22 { font-weight: bold; left: 135px; top: 210px; }
+.point-23 { font-weight: bold; left: 240px; top: 210px; }
 
 .point-15 { font-weight: bold; left: 5px;   top: 2px; }
-.point-16 { font-weight: bold; left: 110px; top: 2px; }
-.point-17 { font-weight: bold; left: 215px; top: 2px; }
+.point-16 { font-weight: bold; left: 140px; top: 2px; }
+.point-17 { font-weight: bold; left: 240px; top: 2px; }
 
 .point-24 { font-weight: bold; left: 5px;   top: 210px; }
-.point-25 { font-weight: bold; left: 110px; top: 210px; }
-.point-26 { font-weight: bold; left: 215px; top: 210px; }
+.point-25 { font-weight: bold; left: 140px; top: 210px; }
+.point-26 { font-weight: bold; left: 240px; top: 210px; }
 
 .point-18 { font-weight: bold; left: 45px;  top: 290px; }
 .point-19 { font-weight: bold; left: 120px; top: 290px; }

@@ -69,6 +69,8 @@ function setupJsPlumb() {
     red: "rgb(255, 0, 0)",
     green: "rgb(0, 255, 0)"
   };
+  const CONNECTOR_Z_INDEX = 26000;
+  const ENDPOINT_Z_INDEX = 25000;
   const redWirePoints = new Set(["point1", "point2", "point3"]);
   const greenWirePoints = new Set(["point18", "point19", "point20"]);
   function getWireColorForId(id) {
@@ -80,6 +82,18 @@ function setupJsPlumb() {
     if (redWirePoints.has(a) || redWirePoints.has(b)) return WIRE_COLORS.red;
     if (greenWirePoints.has(a) || greenWirePoints.has(b)) return WIRE_COLORS.green;
     return WIRE_COLORS.blue;
+  }
+  function raiseJsPlumbNode(node, zIndex) {
+    if (!node || !node.style) return;
+    node.style.zIndex = String(zIndex);
+  }
+  function raiseEndpointVisual(endpoint) {
+    if (!endpoint) return;
+    raiseJsPlumbNode(endpoint.canvas, ENDPOINT_Z_INDEX);
+  }
+  function raiseConnectionVisual(connection) {
+    if (!connection) return;
+    raiseJsPlumbNode(connection.canvas, CONNECTOR_Z_INDEX);
   }
   const endpointsById = new Map();
   const loopbackTargets = new Map();
@@ -107,6 +121,7 @@ function setupJsPlumb() {
       isTarget: true,
       maxConnections: -1
     });
+    raiseEndpointVisual(ep);
     loopbackTargets.set(id, ep);
     return ep;
   }
@@ -124,10 +139,12 @@ function setupJsPlumb() {
     const endpointOptions = { ...baseEndpointOptions };
     endpointOptions.connectorStyle = {
       stroke: wireColor,
-      strokeWidth: 4
+      strokeWidth: 4,
+      zIndex: CONNECTOR_Z_INDEX
     };
     // Use a stable uuid so Auto Connect can reuse the same styled endpoint
     const ep = jsPlumb.addEndpoint(el, { anchor, uuid: id }, endpointOptions);
+    raiseEndpointVisual(ep);
     endpointsById.set(id, ep);
     return ep;
   }
@@ -217,7 +234,7 @@ function setupJsPlumb() {
       sourceEndpoint,
       targetEndpoint,
       connector: ["Bezier", { curviness }],
-      paintStyle: { stroke: wireColor, strokeWidth: 4 }
+      paintStyle: { stroke: wireColor, strokeWidth: 4, zIndex: CONNECTOR_Z_INDEX }
     };
     if (isSelfConnection) {
       const sourceAnchor = anchors[sourceId];
@@ -227,6 +244,7 @@ function setupJsPlumb() {
       }
     }
     const conn = jsPlumb.connect(connectionParams);
+    raiseConnectionVisual(conn);
     if (conn && seenKeys) {
       seenKeys.add(connectionKey(conn.sourceId, conn.targetId));
     }
@@ -238,7 +256,8 @@ function setupJsPlumb() {
     const wireColor = getWireColorForConnection(info.sourceId, info.targetId);
     const curviness = getWireCurvinessForConnection(info.sourceId, info.targetId);
     info.connection.setConnector(["Bezier", { curviness }]);
-    info.connection.setPaintStyle({ stroke: wireColor, strokeWidth: 4 });
+    info.connection.setPaintStyle({ stroke: wireColor, strokeWidth: 4, zIndex: CONNECTOR_Z_INDEX });
+    raiseConnectionVisual(info.connection);
     console.log(`Wire from ${sourceId} set to ${wireColor}`); // Debug log (remove if not needed)
   });
   // Legacy behavior: once connections are verified, do not allow rewiring until reset.
@@ -849,10 +868,11 @@ function setupJsPlumb() {
       return document.querySelector(`.point-${suffix}`);
     }
     function getDefaultConnectionStyle(conn) {
-      if (!conn) return { stroke: SPEAK_LINE_COLOR, strokeWidth: 4 };
+      if (!conn) return { stroke: SPEAK_LINE_COLOR, strokeWidth: 4, zIndex: CONNECTOR_Z_INDEX };
       return {
         stroke: getWireColorForConnection(conn.sourceId, conn.targetId),
-        strokeWidth: 4
+        strokeWidth: 4,
+        zIndex: CONNECTOR_Z_INDEX
       };
     }
     function clearSpeakConnectionHighlights() {
