@@ -62,7 +62,8 @@ function voltageToAngle(voltageValue) {
   }
   const minGraphPoints = 6;
   const lampSelect = document.getElementById("number");
-  const rheostatKnob = document.querySelector(".rheostat-nob");
+  const rheostatKnob =
+    document.getElementById("rheostat-nob") || document.querySelector(".rheostat-nob");
   const rheostatBodyImage = document.getElementById("rheostat-img");
   const transformerKnob = document.querySelector(".transformer-nob img");
 
@@ -71,6 +72,7 @@ function voltageToAngle(voltageValue) {
   const graphPlot = document.getElementById("graphPlot");
   const graphSection = document.querySelector(".graph-section");
   const graphCanvas = document.querySelector(".graph-canvas");
+  const rpmReadout = document.getElementById("rpm-readout");
 
   const addTableBtn =
     findButtonByLabel("Add Table") ||
@@ -123,7 +125,6 @@ document.addEventListener("keydown", (e) => {
   const RHEOSTAT_RIGHT_INSET_PX = 14;
   const RHEOSTAT_FALLBACK_START_LEFT_PX = 21;
   const RHEOSTAT_FALLBACK_END_LEFT_PX = 220;
-  const RHEOSTAT_TOP_PX = 2;
   const LEGACY_AMMETER_BASE_ANGLE = -62;
   const LEGACY_AMMETER_STEP_ANGLE = 1000 / 102;
   const LEGACY_WATTMETER_BASE_ANGLE = -62;
@@ -221,7 +222,6 @@ document.addEventListener("keydown", (e) => {
     const stepPx = totalReadingSteps > 1 ? travel / (totalReadingSteps - 1) : 0;
     const left = range.start + safeIdx * stepPx;
     rheostatKnob.style.left = `${left}px`;
-    rheostatKnob.style.top = `${RHEOSTAT_TOP_PX}px`;
     rheostatKnob.style.transform = "none";
   }
 
@@ -350,6 +350,17 @@ document.addEventListener("keydown", (e) => {
     startNeedleAnimation(el, state);
   }
 
+  function updateRpmReadout(speedValue, { animate = true } = {}) {
+    if (!rpmReadout) return;
+    const safeSpeed = Number.isFinite(speedValue) ? Math.max(0, Math.round(speedValue)) : 0;
+    rpmReadout.textContent = `${safeSpeed} RPM`;
+
+    if (!animate) return;
+    rpmReadout.classList.remove("is-updating");
+    void rpmReadout.offsetWidth;
+    rpmReadout.classList.add("is-updating");
+  }
+
   function updateTransformerState() {
     if (!transformerKnob) return;
     transformerKnob.style.transition = "transform 260ms linear";
@@ -376,6 +387,7 @@ document.addEventListener("keydown", (e) => {
       setNeedleRotation(needle2, currentToAngle(0));
       setNeedleRotation(needle3, voltageToAngle(0));
       setNeedleRotation(needle4, voltageToAngle(0));
+      updateRpmReadout(0, { animate: false });
       updateTransformerState();
       return;
     }
@@ -384,6 +396,7 @@ document.addEventListener("keydown", (e) => {
     setNeedleRotation(needle2, LEGACY_WATTMETER_BASE_ANGLE + safeIdx * LEGACY_WATTMETER_STEP_ANGLE);
     setNeedleRotation(needle3, LEGACY_VOLTMETER_SUPPLY_ANGLE);
     setNeedleRotation(needle4, voltageToAngle(0));
+    updateRpmReadout(speedReadings[safeIdx], { animate: true });
     updateTransformerState();
   }
 

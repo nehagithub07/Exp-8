@@ -3023,7 +3023,7 @@ tr:nth-child(even) { background-color: #f8fbff; }
       <div class="report-title-block">
         <p class="report-kicker">Virtual Labs</p>
         <h1>Simulation Report</h1>
-        <p class="report-subtitle">DC Shunt Generator Load Characteristics</p>
+        <p class="report-subtitle">Speed control of slipring Induction Motor.</p>
       </div>
       <img src="${logoRightSrc}" class="vl-logo" />
     </div>
@@ -3034,7 +3034,7 @@ tr:nth-child(even) { background-color: #f8fbff; }
         <p class="report-stamp">Generated on ${reportDateText}</p>
       </div>
       <p class="report-experiment-label">Experiment Title</p>
-      <p class="report-experiment-title">To Study the Load Characteristics of a DC Shunt Generator</p>
+      <p class="report-experiment-title">Speed control of slipring Induction Motor.</p>
       <div class="info-grid">
           <div class="info-card"><span class="label">Start Time:</span><br>${startTimeText}</div>
           <div class="info-card"><span class="label">End Time:</span><br>${endTimeText}</div>
@@ -3045,7 +3045,7 @@ tr:nth-child(even) { background-color: #f8fbff; }
     <div class="section">
       <h2>Summary</h2>
       <h3>Aim</h3>
-      <p style="text-align:justify;">To study the load characteristics of a DC shunt generator by varying the lamp load, measuring terminal voltage and load current, and plotting the V-I characteristic curve.</p>
+      <p style="text-align:justify;">To perform the speed control test on slip ring induction motor by rotor resistance control method. Plot the motor speed characteristics at different values of applied resistance in slip ring of induction motor.</p>
 
       <h3>Simulation Summary</h3>
       <p style="text-align:justify;">The circuit connections were completed as per the procedure. The supply was switched on, the lamp load was varied step by step, the corresponding load current and terminal voltage readings were recorded, and the load characteristic graph was plotted.</p>
