@@ -130,8 +130,9 @@ document.addEventListener("keydown", (e) => {
   const LEGACY_WATTMETER_BASE_ANGLE = -62;
   const LEGACY_WATTMETER_STEP_ANGLE = 1150 / 100;
   const LEGACY_VOLTMETER_SUPPLY_ANGLE = 30;
-  const TRANSFORMER_OFF_ANGLE = 270;
-  const TRANSFORMER_ON_ANGLE = 400;
+  // Keep OFF as true north (0deg) and preserve the existing ~130deg ON sweep.
+  const TRANSFORMER_OFF_ANGLE = 0;
+  const TRANSFORMER_ON_ANGLE = 130;
   const GRAPH_TITLE_TEXT = "Current (A) vs Speed (RPM)";
   const GRAPH_X_AXIS_LABEL = "Speed (RPM)";
   const GRAPH_Y_AXIS_LABEL = "Current (A)";

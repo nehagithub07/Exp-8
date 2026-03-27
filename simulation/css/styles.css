@@ -149,7 +149,7 @@ h3 {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   margin: 0 auto clamp(10px, 2vw, 18px);
-  height: 35%;
+  height: 38%;
   right: 10px;
 }
 
@@ -923,12 +923,12 @@ h3 {
 
 .transformer-nob img {
     position: absolute;
-    left: 24%;
-    top: 11.8%;
+    left: 22.5%;
+    top: 17%;
     width: 150px;
     height: 150px;
-
 }
+ 
 /* Keep jsPlumb endpoints/wires above all machine artwork */
 .top-row {
   isolation: isolate;
@@ -1444,7 +1444,7 @@ h3 {
 .mcb-label {
   position: absolute;
   letter-spacing: 0.1em;
-  top: 133%;
+  top: 125%;
   left: 50%;
   transform: translateX(-50%);
   font-size: clamp(0.99rem, 0.95vw, 0.75rem);
@@ -2719,5 +2719,135 @@ body.is-modal-open {
   position: relative;
   z-index: 1;
   will-change: transform;
+}
+
+/* =========================
+   FIXED LAYOUT LOCK
+========================= */
+:root {
+  --sim-fixed-width: 1860px;
+  --sim-fixed-min-height: 800px;
+}
+
+body {
+  display: block;
+  margin: 0;
+  padding: var(--gutter);
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.panel,
+.panel-footer {
+  width: var(--sim-fixed-width);
+  min-width: var(--sim-fixed-width);
+  max-width: var(--sim-fixed-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.panel {
+  max-height: 775px;
+  overflow: hidden !important;
+}
+
+.top-row {
+  grid-template-columns: 1fr 2.6fr 1.2fr !important;
+  min-height: var(--sim-fixed-min-height);
+}
+
+.left-column,
+.center-column {
+  border-bottom: none !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.machines-workspace {
+  position: absolute !important;
+  top: 363px !important;
+  left: 53px !important;
+  width: 880px !important;
+  margin-top: 0 !important;
+  flex-wrap: nowrap !important;
+}
+
+.observation-floating {
+  position: absolute !important;
+  top: 250px !important;
+  right: -50px !important;
+  transform: translateX(calc(100% + clamp(8px, 2vw, 16px))) !important;
+  width: clamp(220px, 22vw, 340px) !important;
+  max-width: none !important;
+  margin-top: 0 !important;
+}
+
+.meters {
+  grid-template-columns: repeat(4, minmax(170px, 1fr)) !important;
+  grid-template-rows: auto auto !important;
+  overflow-x: hidden !important;
+}
+
+.meter-area,
+.meter-panel,
+.meters {
+  overflow: hidden !important;
+  overflow-y: hidden !important;
+}
+
+.meter-panel {
+  aspect-ratio: auto !important;
+  min-height: 270px !important;
+  height: 250px !important;
+}
+
+.meter-area::-webkit-scrollbar,
+.meter-panel::-webkit-scrollbar,
+.meters::-webkit-scrollbar {
+  display: none;
+}
+
+.meter-area,
+.meter-panel,
+.meters {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.meter-card {
+  min-width: 170px !important;
+  grid-row: 1 !important;
+}
+
+.meter-card:nth-child(3),
+.meter-card:nth-child(4) {
+  grid-row: 1 !important;
+}
+
+#ammter1-label,
+#voltmeter1-label,
+#wattmeter1-label,
+#rpm1-label,
+#ammter2-label,
+#voltmeter2-label {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin-top: 21px  !important;
+  grid-row: 2 !important;
+  justify-self: center;
+  align-self: start;
+  width: max-content;
+  max-width: calc(100% - 10px);
+  padding: 3px 8px;
+  font-size: clamp(0.72rem, 0.75vw, 0.8rem);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.instruction-overlay,
+.instructions-panel {
+  z-index: 70000 !important;
 }
 
