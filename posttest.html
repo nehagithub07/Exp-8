@@ -798,28 +798,46 @@
 <script>
 /* ------------------ 20 QUESTIONS ------------------ */
 const questions = [
-  {id:1,text:'Armature magnetic field in a DC generator produces which of the following effect?',choices:['A: It demagnetizes or reduces the main flux','B: It cross-magnetizes the main flux','C: It magnetizes or reinforces the main flux','D: Both (a) and (b)'],answer:'D',selected:null},
-  {id:2,text:'Copper losses in the armature of the DC shunt generator amount to which of the following percentages of full load losses? ',choices:['A: 5 to 10%','B: 10 to 20%','C: 20 to 30%','D: 30 to 40%'],answer:'C',selected:null},
-  {id:3,text:'In a DC generator, compared to the air gap under field poles, the interpole air gap is made:',choices:['A: Larger','B: Smaller','C: The same','D: Much smaller'],answer:'A',selected:null},
-  {id:4,text:'If the field current of a DC shunt generator is slightly reduced during operation, the terminal voltage will:',choices:['A:  Increase sharply','B: Decrease gradually','C: Remain unchanged','D: Become zero'],answer:'B',selected:null},
-  {id:5,text:'The yoke of a DC generator is made of cast iron because:',choices:['A: It is cheaper','B: It completes the magnetic path','C: It gives mechanical protection','D: All of these'],answer:'D',selected:null},
-  {id:6,text:'What happens to the terminal voltage of a DC shunt generator as load increases?',choices:['A: It increases','B: It decreases','C: It remains constant','D: It first increases then decreases'],answer:'B',selected:null},
-  {id:7,text:'The main reason for the drop in terminal voltage under load is:',choices:['A: Armature resistance drop and armature reaction','B: Decrease in field resistance','C: Increase in field current','D: Decrease in speed'],answer:'A',selected:null},
-  {id:8,text:'What does the external characteristic curve of a DC shunt generator represent?',choices:['A: E vs Ia','B: V vs IL','C: E vs If','D: V vs N'],answer:'B',selected:null},
-  {id:9,text:'If the terminal voltage of the generator falls sharply with increasing load, it indicates:',choices:['A: High armature resistance','B: Poor voltage regulation','C: Weak residual magnetism','D: Low field current'],answer:'B',selected:null},
-  {id:10,text:'How can the voltage regulation of a DC shunt generator be improved?',choices:['A: By increasing armature resistance','B: By increasing field excitation','C: By reducing field current','D: By increasing speed'],answer:'B',selected:null},
-  {id:11,text:'In a well-designed DC shunt generator, the voltage drop from no-load to full-load is typically:',choices:['A: Negligible','B: Around 5–10%','C: 30–40%','D: 50–60%'],answer:'B',selected:null},
-  {id:12,text:'During the experiment, the load on the DC shunt generator is varied by:',choices:['A: Changing the armature speed','B: Adjusting field rheostat','C: Varying the load resistance across armature','D: Changing supply voltage'],answer:'C',selected:null},
-  {id:13,text:'The reason for using a shunt field regulator in the experiment is to:',choices:['A: Protect the generator','B: Vary the excitation current','C: Maintain constant load','D: Reduce armature reaction'],answer:'B',selected:null},
-  {id:14,text:'When load increases, armature current increases. This causes:',choices:['A: More voltage drop across armature resistance','B: More field flux','C: Less terminal current','D: Constant emf'],answer:'A',selected:null},
-  {id:15,text:'The generated emf in the generator is directly proportional to:',choices:['A: Load current','B: Armature resistance','C: Speed and field flux','D: Terminal voltage'],answer:'C',selected:null},
-  {id:16,text:'In the experiment, the field current is kept constant to obtain:',choices:['A: Open circuit characteristics','B: Load characteristics','C: Internal characteristics','D: Magnetization curve'],answer:'B',selected:null},
-  {id:17,text:'The curve plotted between terminal voltage and load current is generally:',choices:['A: Straight line','B: Slightly drooping curve','C: Parabolic','D: Exponential'],answer:'B',selected:null},
-  {id:18,text:'In the experiment, if the speed of the generator fluctuates, it will:',choices:['A: Have no effect on voltage','B: Cause incorrect load characteristics','C: Reduce field resistance','D: Increase copper loss'],answer:'B',selected:null},
-  {id:19,text:'The load characteristics help determine:',choices:['A: Efficiency and voltage regulation','B: Field winding design','C: Commutator dimensions','D: Mechanical losses'],answer:'A',selected:null},
-  {id:20,text:'Which safety precaution is essential while performing this experiment?',choices:['A: Start without excitation','B: Never exceed rated load current','C: Disconnect load suddenly','D: Operate at maximum speed'],answer:'B',selected:null},
-];
+  {id:1,text:'The purpose of external resistance was to —',choices:['A. Increase efficiency','B. Control speed','C. Reduce voltage','D. Increase frequency'],answer:'B',selected:null},
 
+  {id:2,text:'Increasing rotor resistance causes speed to —',choices:['A. Increase','B. Decrease','C. Remain constant','D. Become zero'],answer:'B',selected:null},
+
+  {id:3,text:'At low speed, torque —',choices:['A. Increases','B. Decreases','C. Remains constant','D. Becomes zero'],answer:'A',selected:null},
+
+  {id:4,text:'The method used is —',choices:['A. Voltage control','B. Rotor resistance control','C. Frequency control','D. Pole changing'],answer:'B',selected:null},
+
+  {id:5,text:'Speed control achieved is —',choices:['A. Above synchronous','B. Below synchronous','C. Equal to synchronous','D. Infinite'],answer:'B',selected:null},
+
+  {id:6,text:'Torque-speed curve shifts —',choices:['A. Right','B. Left','C. Upward','D. Downward'],answer:'B',selected:null},
+
+  {id:7,text:'Maximum torque —',choices:['A. Increases','B. Decreases','C. Remains constant','D. Becomes zero'],answer:'C',selected:null},
+
+  {id:8,text:'Speed regulation is —',choices:['A. Good','B. Poor','C. Excellent','D. Zero'],answer:'B',selected:null},
+
+  {id:9,text:'Rotor copper loss —',choices:['A. Increases','B. Decreases','C. Remains constant','D. Becomes zero'],answer:'A',selected:null},
+
+  {id:10,text:'External resistance device —',choices:['A. Capacitor','B. Rheostat','C. Inductor','D. Transformer'],answer:'B',selected:null},
+
+  {id:11,text:'Rotor current at constant torque —',choices:['A. Increases','B. Decreases','C. Remains constant','D. Becomes zero'],answer:'B',selected:null},
+
+  {id:12,text:'Slip at maximum torque —',choices:['A. Decreases','B. Increases','C. Remains constant','D. Becomes zero'],answer:'B',selected:null},
+
+  {id:13,text:'Limitation of this method —',choices:['A. High efficiency','B. Low efficiency','C. No losses','D. High speed'],answer:'B',selected:null},
+
+  {id:14,text:'Speed control possible by —',choices:['A. Voltage control','B. Rotor resistance','C. Frequency control','D. Pole changing'],answer:'B',selected:null},
+
+  {id:15,text:'Practical applications —',choices:['A. Fans','B. Elevators','C. TVs','D. Computers'],answer:'B',selected:null},
+
+  {id:16,text:'Efficiency decreases because —',choices:['A. Stator losses increase','B. Rotor copper losses increase','C. Voltage drops','D. Speed increases'],answer:'B',selected:null},
+
+  {id:17,text:'With increase in resistance, slip —',choices:['A. Decreases','B. Increases','C. Remains constant','D. Becomes zero'],answer:'B',selected:null},
+
+  {id:18,text:'Power loss in rotor circuit is —',choices:['A. Decreased','B. Increased','C. Constant','D. Zero'],answer:'B',selected:null},
+
+  {id:19,text:'This method is suitable for —',choices:['A. Continuous operation','B. Intermittent operation','C. High efficiency systems','D. No-load condition'],answer:'B',selected:null},
+
+  {id:20,text:'The experiment shows that speed control is —',choices:['A. Efficient and complex','B. Inefficient but simple','C. Highly efficient','D. Impossible'],answer:'B',selected:null},
+];
 /* ------------------ SETTINGS ------------------ */
 const size = 5; // number of questions shown per refresh
 const container = document.getElementById("mcq-container");

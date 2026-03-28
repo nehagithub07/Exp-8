@@ -712,7 +712,7 @@
       <div class="vl-card mb-4 overflow-hidden animate-fadeInUp rounded-lg">
         <div class="px-4 py-3" style="background: linear-gradient(120deg, #021a2c, #064073, #0b60a8);">
           <h1 class="text-lg md:text-xl font-bold text-white text-center leading-snug">
-            To study the Load Characteristics of DC shunt generator
+            Speed control of slipring Induction Motor.
           </h1>
         </div>
       </div>
@@ -725,103 +725,142 @@
     <!-- Introduction -->
     <div>
       <h3 class="text-xl font-semibold mb-4 text-gray-800">Introduction</h3>
+
       <p class="mb-6 text-justify">
-        A DC shunt generator is a type of self-excited DC generator in which the field winding is connected in parallel (shunt) with the armature winding. As a result, the field current remains almost constant (since it depends only on the terminal voltage). The yoke of a DC generator is made of cast iron because it provides high magnetic permeability, good mechanical strength, and serves as a low-reluctance path for the magnetic flux.
+        A wound rotor induction motor, also known as a slip ring induction motor, has a stator similar to a squirrel cage induction motor, but its rotor consists of insulated windings connected to slip rings and brushes. No external power is supplied to the slip rings; instead, they are used to connect external resistance in series with the rotor windings during starting.
       </p>
 
       <p class="mb-6 text-justify">
-        The performance of a DC shunt generator is described using load characteristics, which illustrate how the terminal voltage and load current change as the load varies.
+        A Slip-Ring Induction Motor is a type of three-phase induction motor in which rotor windings are connected to external resistances through slip rings and brushes. This design allows easy control of starting torque and speed.
       </p>
 
       <p class="mb-6 text-justify">
-        In a shunt generator, the field winding is connected in parallel with the armature winding so that the terminal voltage of the generator is applied across it. The shunt field winding has many turns of fine wire having high resistance. Therefore, only a part of the armature current flows through the shunt field winding, and the rest flows through the load. Fig. 1 shows the connections of a shunt wound generator. The armature current I<sub>a</sub> splits into two parts — a small fraction I<sub>sh</sub> flowing through the shunt field winding, while the major part I<sub>L</sub> goes to the external load.
+        Speed control of induction motors is essential in industrial applications such as cranes, hoists, elevators, and conveyors, where variable speed operation is required.
       </p>
 
       <div class="flex justify-center mb-4">
-        <img src="./images/DCS-01.png" alt="Equivalent circuit of DC shunt generator for load characteristics" class="w-[500px] h-[250px] rounded-lg shadow-md">
+        <img src="./images/3-phase-induction-motor.gif" alt="Equivalent circuit of slip ring induction motor" class="w-[500px] h-[250px] rounded-lg shadow-md">
       </div>
       <p class="text-center font-semibold text-gray-800">
-        <b>Fig. 1 Equivalent circuit of DC shunt generator for load characteristics</b>
+        <b>Fig. 1 Equivalent circuit of slip ring induction motor</b>
       </p>
     </div>
 
-    <!-- Losses -->
+    <!-- Principle -->
     <div>
-      <h3 class="text-xl font-semibold mb-4 text-gray-800">Losses in a DC Shunt Generator</h3>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Principle of Operation</h3>
+
       <p class="mb-6 text-justify">
-        In a DC shunt generator, various losses occur during operation, such as armature copper losses, shunt field copper losses, iron losses, and mechanical losses. Among these, armature copper losses constitute a significant portion of the total losses. The copper losses in the armature of a DC shunt generator are approximately 30% of the total full-load losses. These losses occur due to the resistance of the armature winding and increase with load current, thereby affecting the efficiency and voltage regulation of the generator.
+        The operation of a slip-ring induction motor is based on the principle of electromagnetic induction. When a three-phase AC supply is given to the stator winding, it produces a rotating magnetic field (RMF). This rotating field cuts the rotor conductors and induces an emf in them.
+      </p>
+
+      <p class="mb-6 text-justify">
+        Due to this induced emf, current flows in the rotor circuit. This current interacts with the magnetic field, producing torque and causing the rotor to rotate.
       </p>
     </div>
 
-    <!-- Types of Characteristics -->
+    <!-- Slip -->
     <div>
-      <h3 class="text-xl font-semibold mb-4 text-gray-800">Types of Characteristics</h3>
-      <p class="mb-4">
-        There are two main characteristics of a DC shunt generator:
-      </p>
-
-      <h4 class="text-lg font-semibold mb-2 text-gray-800">1. Internal Characteristic</h4>
-      <p class="mb-6 text-justify">
-        The internal characteristic curve represents the relation between the generated voltage (E<sub>g</sub>) and the load current I<sub>L</sub>. When the generator is loaded, the generated voltage decreases due to armature reaction. Therefore, the generated voltage will be lower than the emf generated at no load. In Fig. 2, the AD curve shows the no-load voltage curve, and AB represents the internal characteristic curve.
-      </p>
-
-      <h4 class="text-lg font-semibold mb-2 text-gray-800">2. External or Load Characteristic</h4>
-      <p class="mb-4 text-justify">
-        The external characteristic of a DC shunt generator represents the relationship between the terminal voltage (V) and the load current (I<sub>L</sub>) while the generator is supplying power. It shows how the terminal voltage varies with changes in the load.
-      </p>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Concept of Slip</h3>
 
       <p class="mb-4 text-justify">
-        This characteristic is typically represented by a V–I<sub>L</sub> graph. In Fig. 2, the AC curve represents the external characteristic of the DC shunt generator. Due to the ohmic drop in the armature resistance, the terminal voltage is lower than the generated voltage. Therefore, the external characteristic curve lies below the internal characteristic curve.
+        The speed of an induction motor is always slightly less than its synchronous speed. This difference is called slip.
       </p>
 
       <div class="text-center text-lg font-mono my-6 bg-gray-100 p-4 rounded-lg">
-        V = (E<sub>g</sub> − I<sub>a</sub>R<sub>a</sub>) = E<sub>g</sub> − (I<sub>L</sub> + I<sub>sh</sub>)R<sub>a</sub>
+        s = (N<sub>s</sub> − N) / N<sub>s</sub>
       </div>
 
       <p class="mb-2"><strong>Where,</strong></p>
       <ul class="list-disc pl-6 mb-6 space-y-1">
-        <li>V is the terminal voltage of the generator</li>
-        <li>E<sub>g</sub> is the generated emf in the armature</li>
-        <li>I<sub>a</sub> is armature current and R<sub>a</sub> is armature resistance</li>
-        <li>I<sub>sh</sub> is the current flowing through the shunt field winding</li>
-        <li>I<sub>L</sub> is the load current delivered to the external load</li>
+        <li>N<sub>s</sub> = Synchronous speed</li>
+        <li>N = Rotor speed</li>
       </ul>
 
-      <div class="flex justify-center mb-4">
-        <img src="./images/DCS-02.png" alt="Load characteristics of DC shunt generator" class="w-[500px] h-[250px] rounded-lg shadow-md">
-      </div>
-      <p class="text-center font-semibold text-gray-800">
-        <b>Fig. 2 Characteristics of DC shunt generator</b>
+      <p class="mb-6 text-justify">
+        Slip plays an important role in torque production and speed control of induction motors.
       </p>
     </div>
 
-    <!-- Behaviour -->
+    <!-- Rotor Resistance -->
     <div>
-      <h3 class="text-xl font-semibold mb-4 text-gray-800">Behaviour of External Characteristics</h3>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Rotor Resistance Control Method</h3>
+
       <p class="mb-6 text-justify">
-        When the load resistance of a DC shunt generator decreases, the load current (I<sub>L</sub>) increases. However, this increase is limited only up to point C, known as the breakdown point. Beyond this point, a further decrease in load resistance causes a decrease in load current, and the external characteristic curve reverses (shown by the dotted line). Eventually, the terminal voltage may drop to zero except for a small value due to residual magnetism. The point at which the generator delivers maximum current is called the breakdown point.
+        In a slip-ring induction motor, external resistance can be added to the rotor circuit through slip rings. This method is known as rotor resistance control.
+      </p>
+
+      <h4 class="text-lg font-semibold mb-2 text-gray-800">Working:</h4>
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li>Rotor current decreases</li>
+        <li>Slip increases</li>
+        <li>Speed decreases</li>
+      </ul>
+
+      <p class="mb-6 text-justify">
+        By varying the external resistance, the speed of the motor can be controlled smoothly.
+      </p>
+    </div>
+
+    <!-- Effect -->
+    <div>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Effect of Rotor Resistance on Speed</h3>
+
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li>Increasing rotor resistance → increases slip → decreases speed</li>
+        <li>Decreasing rotor resistance → decreases slip → increases speed</li>
+      </ul>
+
+      <p class="mb-6 text-justify">
+        This allows smooth speed control below synchronous speed.
+      </p>
+    </div>
+
+    <!-- Torque Slip -->
+    <div>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Torque-Slip Characteristics</h3>
+
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li>At low slip → torque increases linearly</li>
+        <li>At higher slip → torque reaches maximum (breakdown torque)</li>
+        <li>Beyond that → torque decreases</li>
+      </ul>
+
+      <p class="mb-6 text-justify">
+        Maximum torque remains constant even if rotor resistance changes, but the slip at which it occurs increases with resistance.
       </p>
     </div>
 
     <!-- Advantages -->
     <div>
-      <h3 class="text-xl font-semibold mb-4 text-gray-800">Advantages</h3>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Advantages of Rotor Resistance Control</h3>
       <ul class="list-disc pl-6 mb-6 space-y-2">
-        <li>Provides nearly constant terminal voltage under light to medium load.</li>
-        <li>Stable operation within a certain load range.</li>
-        <li>Suitable for battery charging, lighting, and excitation purposes where steady voltage is required.</li>
-        <li>Simple voltage control by adjusting the field current.</li>
+        <li>Simple and easy method</li>
+        <li>Provides high starting torque</li>
+        <li>Smooth speed control</li>
+        <li>Suitable for heavy-load applications</li>
       </ul>
     </div>
 
     <!-- Disadvantages -->
     <div>
       <h3 class="text-xl font-semibold mb-4 text-gray-800">Disadvantages</h3>
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li>High power loss in external resistances</li>
+        <li>Low efficiency</li>
+        <li>Heat generation</li>
+        <li>Not suitable for continuous operation at reduced speed</li>
+      </ul>
+    </div>
+
+    <!-- Applications -->
+    <div>
+      <h3 class="text-xl font-semibold mb-4 text-gray-800">Applications</h3>
       <ul class="list-disc pl-6 space-y-2">
-        <li>Poor voltage regulation at high load current.</li>
-        <li>Stability decreases with decreasing load resistance.</li>
-        <li>Depends on residual magnetism for initial voltage build-up.</li>
-        <li>Breakdown point limitation: beyond a certain load current, the characteristic curve reverses.</li>
+        <li>Cranes and hoists</li>
+        <li>Elevators</li>
+        <li>Conveyors</li>
+        <li>Rolling mills</li>
       </ul>
     </div>
 

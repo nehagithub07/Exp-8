@@ -3023,7 +3023,7 @@ tr:nth-child(even) { background-color: #f8fbff; }
       <div class="report-title-block">
         <p class="report-kicker">Virtual Labs</p>
         <h1>Simulation Report</h1>
-        <p class="report-subtitle">Speed control of slipring Induction Motor.</p>
+        <p class="report-subtitle">Speed Control of Slip Ring Induction Motor</p>
       </div>
       <img src="${logoRightSrc}" class="vl-logo" />
     </div>
@@ -3033,38 +3033,109 @@ tr:nth-child(even) { background-color: #f8fbff; }
         <p class="badge">Electrical Machines Lab</p>
         <p class="report-stamp">Generated on ${reportDateText}</p>
       </div>
+
       <p class="report-experiment-label">Experiment Title</p>
-      <p class="report-experiment-title">Speed control of slipring Induction Motor.</p>
+      <p class="report-experiment-title">
+        Speed Control of Slip Ring Induction Motor using Rotor Resistance Method
+      </p>
+
       <div class="info-grid">
-          <div class="info-card"><span class="label">Start Time:</span><br>${startTimeText}</div>
-          <div class="info-card"><span class="label">End Time:</span><br>${endTimeText}</div>
-          <div class="info-card"><span class="label">Total Time Spent:</span><br>${durationText}</div>
-        </div>
+        <div class="info-card"><span class="label">Start Time:</span><br>${startTimeText}</div>
+        <div class="info-card"><span class="label">End Time:</span><br>${endTimeText}</div>
+        <div class="info-card"><span class="label">Total Time Spent:</span><br>${durationText}</div>
       </div>
+    </div>
 
     <div class="section">
       <h2>Summary</h2>
+
       <h3>Aim</h3>
-      <p style="text-align:justify;">To perform the speed control test on slip ring induction motor by rotor resistance control method. Plot the motor speed characteristics at different values of applied resistance in slip ring of induction motor.</p>
+      <p style="text-align:justify;">
+        To perform the speed control of a slip ring induction motor using the rotor resistance control method and analyze the variation of motor speed with respect to different rotor resistance values.
+      </p>
+
+      <h3>Theory</h3>
+
+      <h4>Introduction</h4>
+      <p style="text-align:justify;">
+        A slip ring induction motor (wound rotor induction motor) has a stator similar to a squirrel cage motor, but its rotor consists of insulated windings connected to external resistances through slip rings and brushes. This arrangement allows control over starting torque and speed.
+      </p>
+
+      <p style="text-align:justify;">
+        These motors are widely used in industrial applications such as cranes, hoists, elevators, and conveyors where variable speed control is required.
+      </p>
+
+      <h4>Principle of Operation</h4>
+      <p style="text-align:justify;">
+        When a three-phase AC supply is applied to the stator, it produces a rotating magnetic field (RMF). This field induces an emf in the rotor conductors, causing current to flow. The interaction between rotor current and magnetic field produces torque, causing the rotor to rotate.
+      </p>
+
+      <h4>Concept of Slip</h4>
+      <p style="text-align:center;">
+        s = (Ns - N) / Ns
+      </p>
+      <p style="text-align:justify;">
+        Where Ns is synchronous speed and N is rotor speed. Slip determines the difference between synchronous and actual speed and plays a key role in speed control.
+      </p>
+
+      <h4>Rotor Resistance Control Method</h4>
+      <p style="text-align:justify;">
+        External resistance is added to the rotor circuit through slip rings. Increasing resistance increases slip and reduces speed, allowing smooth control below synchronous speed.
+      </p>
+
+      <h4>Effect of Rotor Resistance</h4>
+      <ul>
+        <li>Increasing resistance → increases slip → decreases speed</li>
+        <li>Decreasing resistance → decreases slip → increases speed</li>
+      </ul>
+
+      <h4>Torque-Slip Characteristics</h4>
+      <ul>
+        <li>At low slip → torque increases linearly</li>
+        <li>At high slip → torque reaches maximum (breakdown torque)</li>
+        <li>Maximum torque remains constant but shifts with resistance</li>
+      </ul>
+
+      <h4>Advantages</h4>
+      <ul>
+        <li>Simple and effective speed control method</li>
+        <li>High starting torque</li>
+        <li>Smooth control</li>
+      </ul>
+
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Power loss in resistors</li>
+        <li>Reduced efficiency</li>
+        <li>Heat generation</li>
+      </ul>
+
+      <h4>Applications</h4>
+      <ul>
+        <li>Cranes and hoists</li>
+        <li>Elevators</li>
+        <li>Conveyors</li>
+        <li>Rolling mills</li>
+      </ul>
 
       <h3>Simulation Summary</h3>
-      <p style="text-align:justify;">The circuit connections were completed as per the procedure. The supply was switched on, the lamp load was varied step by step, the corresponding load current and terminal voltage readings were recorded, and the load characteristic graph was plotted.</p>
+      <p style="text-align:justify;">
+        The circuit connections were completed as per the procedure. The motor was started with external rotor resistance, and the resistance was gradually varied. The corresponding motor speed values were observed and recorded. The speed versus resistance characteristics were analyzed.
+      </p>
 
       <h3>Components and Key Parameters</h3>
       <ul class="two-column-list">
-        <li>MCB</li>
-        <li>3-Point Starter: 220 V DC, 7.5 HP</li>
-        <li>DC Shunt Motor: 5 HP, 220 V DC, 19 A (max), 1500 RPM</li>
-        <li>DC Shunt Generator: 3 kW, 220 V DC, 1500 RPM</li>
-        <li>Load Type: Resistive Lamp Load</li>
-        <li>Bulbs: 10 x 200 W each</li>
-        <li>DC Voltmeter: 0-420 V</li>
-        <li>DC Ammeter: 0-30 A</li>
-        <li>Connecting Leads</li>
+        <li>Three Phase Supply</li>
+        <li>Slip Ring Induction Motor</li>
+        <li>Rotor Resistance Bank</li>
+        <li>Ammeter</li>
+        <li>Voltmeter</li>
+        <li>Tachometer (Speed Measurement)</li>
+        <li>Connecting Wires</li>
+        <li>Starter</li>
       </ul>
     </div>
   </div>
-
   <div class="report-page report-page--results">
     <div class="section results-section">
       <h2>Results</h2>
